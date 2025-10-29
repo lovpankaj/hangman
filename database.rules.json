@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "$uid": {
+      ".read": "auth.uid === $uid",
+      ".write": "auth.uid === $uid",
+      "Scores": {
+        ".indexOn": ["timestamp"]
+      }
+    }
+  }
+}
