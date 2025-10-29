@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { getRandomWord, DIFFICULTIES } from '../wordList'
 
 const HANGMAN_STAGES = [
@@ -22,6 +22,22 @@ export default function Hangman({ difficulty, onGameEnd, userId }) {
     const newWord = getRandomWord(difficulty)
     setWord(newWord)
   }, [difficulty])
+
+  const handleKeyPress = useCallback((event) => {
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      const letter = event.key.toUpperCase()
+      if (/^[A-Z]$/.test(letter)) {
+        handleGuess(letter)
+      }
+    }
+  }, [guessedLetters, word, gameStatus])
+
+  useEffect(() => {
+    window.addEventListener('keypress', handleKeyPress)
+    return () => {
+      window.removeEventListener('keypress', handleKeyPress)
+    }
+  }, [handleKeyPress])
 
   const displayWord = word
     .split('')
